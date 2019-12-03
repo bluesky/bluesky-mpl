@@ -25,15 +25,15 @@ Clone and install.
 
 .. code-block:: bash
 
-   git clone https://github.com/NSLS-II/bluesky-browser
-   cd bluesky-browser
+   git clone https://github.com/NSLS-II/bluesky-mpl
+   cd bluesky-mpl
    pip install -e .
 
 Run the demo.
 
 .. code-block:: bash
 
-   bluesky-browser --demo
+   bluesky-mpl --demo
 
 The above generates example data in a temporary directory and launches a Qt
 application to browse that data. It supposes there are two catalogs of data,
@@ -47,11 +47,11 @@ To customize and extend this, generate a configuration file
 
 .. code-block:: bash
 
-   bluesky-browser --generate-config
+   bluesky-mpl --generate-config
 
-and edit it. The ``bluesky-browser`` will automatically discover and apply the
+and edit it. The ``bluesky-mpl`` will automatically discover and apply the
 configuration file if it located in the current directory where
-``bluesky-browser`` is run. (In the future we will add a proper search path
+``bluesky-mpl`` is run. (In the future we will add a proper search path
 with other standard locations.)
 
 Intended Scope

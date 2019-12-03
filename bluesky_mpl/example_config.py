@@ -1,4 +1,4 @@
-# Configuration file for bluesky-browser
+# Configuration file for bluesky-mpl
 
 ## SEARCH RESULTS
 #

@@ -10,7 +10,7 @@ import versioneer
 min_version = (3, 6)
 if sys.version_info < min_version:
     error = """
-bluesky-browser does not support Python {0}.{1}.
+bluesky-mpl does not support Python {0}.{1}.
 Python {2}.{3} and above is required. Check your Python version like so:
 
 python3 --version
@@ -34,21 +34,21 @@ with open(path.join(here, 'requirements.txt')) as requirements_file:
 
 
 setup(
-    name='bluesky-browser',
+    name='bluesky-mpl',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description="Library of Qt widgets for searching, viewing document streams",
     long_description=readme,
     author="Bluesky Project Contributors",
     author_email='dallan@bnl.gov',
-    url='https://github.com/NSLS-II/bluesky-browser',
+    url='https://github.com/NSLS-II/bluesky-mpl',
     python_requires='>={}'.format('.'.join(str(n) for n in min_version)),
     packages=find_packages(exclude=['docs', 'tests']),
     entry_points={
         'console_scripts': [
-            'bluesky-browser-qt = bluesky_browser.frameworks.qt.main:main',
+            'bluesky-mpl-qt = bluesky_browser.frameworks.qt.main:main',
             # for back-compat, may be removed:
-            'bluesky-browser = bluesky_browser.frameworks.qt.main:main',
+            'bluesky-mpl = bluesky_browser.frameworks.qt.main:main',
             ],
         },
     include_package_data=True,

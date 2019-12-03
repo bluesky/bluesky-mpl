@@ -4,4 +4,4 @@ Installation
 
 At the command line::
 
-    $ pip install bluesky-browser
+    $ pip install bluesky-mpl

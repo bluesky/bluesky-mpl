@@ -136,7 +136,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'bluesky-browser'
+htmlhelp_basename = 'bluesky-mpl'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -163,7 +163,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'bluesky-browser.tex', 'Bluesky Browser Documentation',
+    (master_doc, 'bluesky-mpl.tex', 'Bluesky Browser Documentation',
      'Contributors', 'manual'),
 ]
 
@@ -173,7 +173,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'bluesky-browser', 'Bluesky Browser Documentation',
+    (master_doc, 'bluesky-mpl', 'Bluesky Browser Documentation',
      [author], 1)
 ]
 
@@ -184,8 +184,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'bluesky-browser', 'Bluesky Browser Documentation',
-     author, 'bluesky-browser', 'Library of Qt widgets for searching, viewing document streams',
+    (master_doc, 'bluesky-mpl', 'Bluesky Browser Documentation',
+     author, 'bluesky-mpl', 'Library of Qt widgets for searching, viewing document streams',
      'Miscellaneous'),
 ]
 
