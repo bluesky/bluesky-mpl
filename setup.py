@@ -44,16 +44,9 @@ setup(
     url='https://github.com/NSLS-II/bluesky-mpl',
     python_requires='>={}'.format('.'.join(str(n) for n in min_version)),
     packages=find_packages(exclude=['docs', 'tests']),
-    entry_points={
-        'console_scripts': [
-            'bluesky-mpl-qt = bluesky_browser.frameworks.qt.main:main',
-            # for back-compat, may be removed:
-            'bluesky-mpl = bluesky_browser.frameworks.qt.main:main',
-            ],
-        },
     include_package_data=True,
     package_data={
-        'bluesky_browser': [
+        'bluesky_mpl': [
             # When adding files here, remember to update MANIFEST.in as well,
             # or else they will not be included in the distribution on PyPI!
             # 'path/to/data_file',
