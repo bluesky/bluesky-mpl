@@ -9,7 +9,7 @@ from qtpy.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from qtpy.QtCore import QObject, Signal
 from qtpy import QtCore, QtGui
 
-from .figures import FigureManager
+from .figures import FigureDispatcher
 from .utils import (
     ConfigurableQTabWidget,
 )
@@ -139,7 +139,7 @@ class OuterTabContainer(ConfigurableQTabWidget):
 
 
 class InnerTabContainer(ConfigurableQTabWidget):
-    factories = List([FigureManager], config=True)
+    factories = List([FigureDispatcher], config=True)
     handler_registry = Dict(DottedObjectName(), config=True)
 
     def __init__(self, *args, **kwargs):

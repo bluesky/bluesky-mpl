@@ -23,7 +23,7 @@ from ..utils import load_config
 log = logging.getLogger('bluesky_mpl')
 
 
-class FigureManager(Configurable):
+class FigureDispatcher(Configurable):
     """
     For a given Viewer, encasulate the matplotlib Figures and associated tabs.
     """
