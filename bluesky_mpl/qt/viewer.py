@@ -92,13 +92,15 @@ def _create_qApp():
 def start_viewer():
     import matplotlib
     matplotlib.use('Qt5Agg')
-    import matplotlib.pyplot as plt
-    plt.ion()
+    # import matplotlib.pyplot as plt
+    # plt.ion()  # not sure if we need this...
     _create_qApp()
     main_window = QMainWindow()
     viewer = Viewer()
     main_window.setCentralWidget(viewer)
     main_window.show()
+    # Avoid letting main_window be garbage collected.
+    viewer._main_window = main_window
     return viewer
 
 
