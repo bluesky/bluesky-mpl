@@ -1,6 +1,9 @@
 import functools
+import os
+import re
 
 import event_model
+import matplotlib
 from traitlets.traitlets import Dict, DottedObjectName, List
 from qtpy.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from qtpy.QtCore import QObject, Signal
@@ -8,7 +11,6 @@ from qtpy import QtCore, QtGui
 
 from .figures import FigureManager
 from .utils import (
-    ConfigurableQWidget,
     ConfigurableQTabWidget,
 )
 from ..utils import load_config
@@ -25,7 +27,6 @@ def _get_teleporter():
 class QtAwareCallback:
     def __init__(self, *args, use_teleporter=None, **kwargs):
         if use_teleporter is None:
-            import matplotlib
             use_teleporter = 'qt' in matplotlib.get_backend().lower()
         if use_teleporter:
             Teleporter = _get_teleporter()
@@ -45,12 +46,14 @@ class QtAwareCallback:
 class QRunRouter(event_model.RunRouter, QtAwareCallback):
     ...
 
+
 qApp = None
+
 
 def _create_qApp():
     """
     Create QApplicaiton if one does not exist. Return QApplication.instance().
-    
+
     Vendored from matplotlib.backends.backend_qt5 with changes:
     - Assume Qt5, removing tolerance for Qt4.
     - Applicaiton has been changed (matplotlib -> bluesky).
@@ -62,7 +65,7 @@ def _create_qApp():
         if app is None:
             # check for DISPLAY env variable on X11 build of Qt
             try:
-                from PyQt5 import QtX11Extras
+                from PyQt5 import QtX11Extras  # noqa
                 is_x11_build = True
             except ImportError:
                 is_x11_build = False
@@ -90,7 +93,6 @@ def _create_qApp():
 
 
 def start_viewer():
-    import matplotlib
     matplotlib.use('Qt5Agg')
     _create_qApp()
     main_window = QMainWindow()
@@ -115,7 +117,6 @@ class Viewer(QWidget):
 
     def __call__(self, name, doc):
         self.name_doc.emit(name, doc)
-
 
 
 class OuterTabContainer(ConfigurableQTabWidget):
