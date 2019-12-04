@@ -16,7 +16,7 @@ noisy_det.kind = 'hinted'
 det4.kind = 'hinted'
 
 
-log = logging.getLogger('bluesky_browser')
+log = logging.getLogger('bluesky_mpl')
 
 random_img = SynSignal(func=lambda: np.random.random((5, 10, 10)), name='random_img')
 

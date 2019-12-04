@@ -2,7 +2,7 @@ from traitlets import TraitType
 from traitlets.config.loader import (PyFileConfigLoader, ConfigFileNotFound,
                                      Config)
 
-CONFIG_FILE_NAME = 'bluesky_browser_config.py'
+CONFIG_FILE_NAME = 'bluesky_mpl_config.py'
 CONFIG_SEARCH_PATH = ('.')
 
 

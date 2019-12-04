@@ -8,7 +8,7 @@ from traitlets.config import Configurable
 
 from ..utils import load_config, Callable
 
-log = logging.getLogger('bluesky_browser')
+log = logging.getLogger('bluesky_mpl')
 
 
 def first_frame(event_page, image_key):

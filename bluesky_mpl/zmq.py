@@ -5,7 +5,7 @@ from qtpy.QtCore import QThread
 from qtpy.QtCore import Signal
 
 
-log = logging.getLogger('bluesky_browser')
+log = logging.getLogger('bluesky_mpl')
 
 
 class ConsumerThread(QThread):

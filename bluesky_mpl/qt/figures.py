@@ -22,7 +22,7 @@ from ..utils import load_config
 matplotlib.use('Qt5Agg')  # must set before importing matplotlib.pyplot
 
 
-log = logging.getLogger('bluesky_browser')
+log = logging.getLogger('bluesky_mpl')
 
 
 class FigureManager(Configurable):

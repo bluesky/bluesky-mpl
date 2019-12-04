@@ -8,7 +8,7 @@ from traitlets.traitlets import Bool, Type
 from ..utils import load_config
 from .utils import hinted_fields
 
-log = logging.getLogger('bluesky_browser')
+log = logging.getLogger('bluesky_mpl')
 
 
 class LinePlotManager(Configurable):
