@@ -2,8 +2,9 @@ import functools
 
 import event_model
 from traitlets.traitlets import Dict, DottedObjectName, List
-from qtpy.QtWidgets import QWidget, QVBoxLayout
+from qtpy.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
 from qtpy.QtCore import QObject, Signal
+from qtpy import QtCore, QtGui
 
 from .figures import FigureManager
 from .utils import (
@@ -43,6 +44,62 @@ class QtAwareCallback:
 
 class QRunRouter(event_model.RunRouter, QtAwareCallback):
     ...
+
+qApp = None
+
+def _create_qApp():
+    """
+    Create QApplicaiton if one does not exist. Return QApplication.instance().
+    
+    Vendored from matplotlib.backends.backend_qt5 with changes:
+    - Assume Qt5, removing tolerance for Qt4.
+    - Applicaiton has been changed (matplotlib -> bluesky).
+    """
+    global qApp
+
+    if qApp is None:
+        app = QApplication.instance()
+        if app is None:
+            # check for DISPLAY env variable on X11 build of Qt
+            try:
+                from PyQt5 import QtX11Extras
+                is_x11_build = True
+            except ImportError:
+                is_x11_build = False
+            else:
+                is_x11_build = hasattr(QtGui, "QX11Info")
+            if is_x11_build:
+                display = os.environ.get('DISPLAY')
+                if display is None or not re.search(r':\d', display):
+                    raise RuntimeError('Invalid DISPLAY variable')
+
+            try:
+                QApplication.setAttribute(
+                    QtCore.Qt.AA_EnableHighDpiScaling)
+            except AttributeError:  # Attribute only exists for Qt>=5.6.
+                pass
+            qApp = QApplication(["bluesky"])
+            qApp.lastWindowClosed.connect(qApp.quit)
+        else:
+            qApp = app
+
+    try:
+        qApp.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps)
+    except AttributeError:
+        pass
+
+
+def start_viewer():
+    import matplotlib
+    matplotlib.use('Qt5Agg')
+    import matplotlib.pyplot as plt
+    plt.ion()
+    _create_qApp()
+    main_window = QMainWindow()
+    viewer = Viewer()
+    main_window.setCentralWidget(viewer)
+    main_window.show()
+    return viewer
 
 
 class Viewer(QWidget):

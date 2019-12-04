@@ -4,7 +4,8 @@ from event_model import RunRouter
 from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas,
     NavigationToolbar2QT as NavigationToolbar)
-import matplotlib
+from matplotlib.figure import Figure
+import matplotlib.figure
 from qtpy.QtWidgets import (  # noqa
     QLabel,
     QWidget,
@@ -19,7 +20,6 @@ from ..heuristics.image import LatestFrameImageManager
 from ..utils import load_config
 
 matplotlib.use('Qt5Agg')  # must set before importing matplotlib.pyplot
-import matplotlib.pyplot as plt  # noqa
 
 
 log = logging.getLogger('bluesky_browser')
@@ -49,7 +49,8 @@ class FigureManager(Configurable):
 
     def _add_figure(self, key, label, *args, **kwargs):
         tab = QWidget()
-        fig, _ = plt.subplots(*args, **kwargs)
+        fig = Figure()
+        fig.subplots()
         canvas = FigureCanvas(fig)
         canvas.setMinimumWidth(640)
         canvas.setParent(tab)

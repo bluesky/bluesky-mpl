@@ -96,7 +96,7 @@ class LinePlotManager(Configurable):
                     line = self.line_class(func, ax=ax)
                     callbacks.append(line)
 
-                if fields:
+                if fields and fig.axes:
                     # Set the xlabel on the bottom-most axis.
                     if x_key == 'time':
                         xlabel = x_key
