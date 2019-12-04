@@ -15,11 +15,11 @@ Create a custom conda environment.
 
 .. code-block:: bash
 
-   conda create -n bluesky_browser python=3 \
+   conda create -n bluesky_mpl python=3 \
        bluesky jsonschema matplotlib ophyd pyqt \
        pyzmq qtpy suitcase-jsonl tornado traitlets  \
        -c lightsource2-tag
-   conda activate bluesky_browser
+   conda activate bluesky_mpl
 
 Clone and install.
 

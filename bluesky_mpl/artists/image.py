@@ -3,7 +3,7 @@ from event_model import DocumentRouter
 import numpy
 
 
-log = logging.getLogger('bluesky_browser')
+log = logging.getLogger(__name__)
 
 
 class Image(DocumentRouter):

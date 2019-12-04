@@ -75,7 +75,7 @@ Ready to contribute? Here's how to set up `bluesky-mpl` for local development.
 
 5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
 
-    $ flake8 bluesky_browser tests
+    $ flake8 bluesky_mpl tests
     $ python setup.py test
     $ tox
 
