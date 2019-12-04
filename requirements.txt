@@ -1,5 +1,5 @@
 bluesky
-event-model >=1.11.1
+event-model >=1.13.0b5
 databroker >=1.0.0a1
 jsonschema
 matplotlib
