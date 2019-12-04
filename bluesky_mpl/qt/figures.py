@@ -51,7 +51,6 @@ class FigureDispatcher(Configurable):
         fig.subplots()
         canvas = FigureCanvas(fig)
         canvas.setMinimumWidth(640)
-        canvas.setParent(tab)
         toolbar = NavigationToolbar(canvas, tab)
         tab_label = QLabel(label)
         tab_label.setMaximumHeight(20)
