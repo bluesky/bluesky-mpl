@@ -19,8 +19,6 @@ from ..heuristics.line import LinePlotManager
 from ..heuristics.image import LatestFrameImageManager
 from ..utils import load_config
 
-matplotlib.use('Qt5Agg')  # must set before importing matplotlib.pyplot
-
 
 log = logging.getLogger('bluesky_mpl')
 
