@@ -145,6 +145,8 @@ def superQ(QClass):
 SuperQObject = superQ(QObject)
 ConfigurableQObject = MetaQObjectHasTraits(
     'NewBase', (Configurable, SuperQObject), {})
+ConfigurableQWidget = MetaQObjectHasTraits(
+    'NewBase', (Configurable, QWidget, SuperQObject), {})
 ConfigurableQTabWidget = MetaQObjectHasTraits(
     'NewBase', (Configurable, QTabWidget, SuperQObject), {})
 ConfigurableMoveableTabContainer = MetaQObjectHasTraits(

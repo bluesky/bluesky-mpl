@@ -4,7 +4,7 @@ from functools import partial
 import itertools
 import logging
 
-from event_model import RunRouter, Filler
+from event_model import RunRouter
 from databroker.core import parse_handler_registry
 from qtpy.QtCore import Signal, Qt, QThread
 from qtpy.QtWidgets import (
@@ -16,21 +16,18 @@ from qtpy.QtWidgets import (
 )
 from traitlets.traitlets import List, Dict, DottedObjectName, Integer
 
-from .header_tree import HeaderTreeFactory
-from .baseline import BaselineFactory
 from .figures import FigureManager
 from .utils import (
-    MoveableTabWidget,
-    ConfigurableMoveableTabContainer,
+    ConfigurableQWidget,
     ConfigurableQTabWidget,
 )
-from ...utils import load_config
+from ..utils import load_config
 
 
 log = logging.getLogger('bluesky_browser')
 
 
-class Viewer(ConfigurableMoveableTabContainer):
+class Viewer(ConfigurableQWidget):
     """
     Contains multiple TabbedViewingAreas
     """
@@ -214,9 +211,7 @@ class RunViewer(ConfigurableQTabWidget):
     """
     Contains tabs showing various view on the data from one Run.
     """
-    factories = List([HeaderTreeFactory,
-                      BaselineFactory,
-                      FigureManager], config=True)
+    factories = List([FigureManager], config=True)
     handler_registry = Dict(DottedObjectName(), config=True)
 
     def __init__(self, *args, **kwargs):

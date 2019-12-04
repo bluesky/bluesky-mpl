@@ -14,11 +14,8 @@ from qtpy.QtWidgets import (
     QHBoxLayout,
     QSplitter)
 
-from .search import SearchWidget, SearchState
-from .summary import SummaryWidget
 from .viewer import Viewer
-from ...zmq import ConsumerThread
-from ... import __version__
+from .. import __version__
 
 
 log = logging.getLogger('bluesky_browser')
@@ -131,14 +128,10 @@ def main():
     sys.exit(app.exec_())
 
 
-def build_app(catalog_uri, zmq_address=None):
-    catalog = Catalog(catalog_uri)
-
-    app = QApplication([b'Bluesky Browser'])
+def build_app():
+    app = QApplication([b'Bluesky'])
     app.main_window = QMainWindow()
-    central_widget = CentralWidget(
-        catalog=catalog,
-        zmq_address=zmq_address,
+    central_widget = Viewer(
         menuBar=app.main_window.menuBar)
     app.main_window.setCentralWidget(central_widget)
     app.main_window.show()

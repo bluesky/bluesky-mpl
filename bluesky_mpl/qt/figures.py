@@ -13,10 +13,10 @@ from qtpy.QtWidgets import (  # noqa
 from traitlets.traitlets import Bool, List, Set
 from traitlets.config import Configurable
 
-from ...heuristics.utils import hinted_fields, guess_dimensions  # noqa
-from ...heuristics.line import LinePlotManager
-from ...heuristics.image import LatestFrameImageManager
-from ...utils import load_config
+from ..heuristics.utils import hinted_fields, guess_dimensions  # noqa
+from ..heuristics.line import LinePlotManager
+from ..heuristics.image import LatestFrameImageManager
+from ..utils import load_config
 
 matplotlib.use('Qt5Agg')  # must set before importing matplotlib.pyplot
 import matplotlib.pyplot as plt  # noqa

@@ -23,7 +23,7 @@ class LinePlotManager(Configurable):
         # By defining the default value of line_class dynamically here, we
         # avoid importing matplotlib if some non-matplotlib line_class is
         # specfied by configuration.
-        from ..artists.mpl.line import Line
+        from ..artists.line import Line
         return Line
 
     def __init__(self, fig_manager, dimensions):
