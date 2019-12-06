@@ -8,3 +8,4 @@ viewer = start_viewer()
 RE.subscribe(viewer)
 
 RE(scan([det], motor, -1, 1, 10))
+RE(scan([det], motor, -3, 3, 5))
