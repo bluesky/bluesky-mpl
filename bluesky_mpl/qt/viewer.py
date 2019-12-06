@@ -149,7 +149,7 @@ class Viewer(QWidget):
         self.name_doc.emit(name, doc)
 
     def add_tab(self, label):
-        self._outer_tab_container.add_tab(label)
+        return self._outer_tab_container.add_tab(label)
 
     def add_run(self, run, fill='delayed'):
         for name, doc in run.canonical(fill=fill):
