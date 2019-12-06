@@ -5,7 +5,6 @@ from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas,
     NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
-import matplotlib.figure
 from qtpy.QtWidgets import (  # noqa
     QLabel,
     QWidget,
