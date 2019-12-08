@@ -2,6 +2,7 @@ import collections
 
 from event_model import DocumentRouter
 import matplotlib.pyplot as plt
+import numpy
 
 
 class Line(DocumentRouter):
@@ -34,6 +35,55 @@ class Line(DocumentRouter):
         self.y_data = []
         self.label_template = label_template
         self.label = kwargs.get('label')
+
+    @classmethod
+    def from_expr(cls, x, y, *, label_template='{scan_id} [{uid:.8}]', ax=None, **kwargs):
+        """
+        Construct a Line from expressions given as strings.
+
+        The strings can be fields names, 'time', 'seq_num', or mathematical
+        functions thereof. All functions in the numpy namespace are available.
+        See examples below.
+
+        Parameters
+        ----------
+        x: string
+        y: string
+        label_template : string, optional
+            This string will be formatted with the RunStart document. Any missing
+            values will be filled with '?'. If the keyword argument 'label' is
+            given, this argument will be ignored.
+        ax : matplotlib Axes, optional
+            If None, a new Figure and Axes are created.
+        **kwargs
+            Passed through to :meth:`Axes.plot` to style Line object.
+
+        Examples
+        --------
+        Plot intensity 'I' vs temperature 'T'.
+
+        >>> line = Line.from_expr('T', 'I')
+
+        Plot intensity 'I' vs Event time.
+
+        >>> line = Line.from_expr('time', 'I')
+
+        Plot intensity 'I' normalized by 'I0' vs Event sequence number.
+
+        >>> line = Line.from_expr('seq_num', 'I/I0')
+
+        Plot the log(I/I0) vs Event time. This uses numpy.log. Any numpy
+        function is available.
+
+        >>> line = Line.from_expr('seq_num', 'log(I/I0)')
+        """
+        def func(event_page):
+            namespace = dict(collections.ChainMap(
+                {k: numpy.asarray(v) for k, v in event_page['data'].items()},
+                event_page,
+                numpy.__dict__))
+            return eval(x, namespace), eval(y, namespace)
+        return cls(func, label_template=label_template, ax=ax, **kwargs)
 
     def start(self, doc):
         if self.label is None:
