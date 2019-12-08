@@ -15,7 +15,7 @@ class Line(DocumentRouter):
         (x points and y points). The two lists must contain an equal number of
         items, but that number is arbitrary. That is, a given document may add
         one new point to the plot, no new points, or multiple new points.
-    label_template : string
+    label_template : string, optional
         This string will be formatted with the RunStart document. Any missing
         values will be filled with '?'. If the keyword argument 'label' is
         given, this argument will be ignored.
