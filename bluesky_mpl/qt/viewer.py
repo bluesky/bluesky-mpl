@@ -139,29 +139,29 @@ class Viewer(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         layout = QVBoxLayout()
-        self._outer_tab_container = OuterTabContainer()
-        layout.addWidget(self._outer_tab_container)
+        self._viewer_tab_container = ViewerTabContainer()
+        layout.addWidget(self._viewer_tab_container)
         self.setLayout(layout)
-        self.name_doc.connect(self._outer_tab_container.run_router)
-        self.tabs = TabsView(self._outer_tab_container.tabs)
+        self.name_doc.connect(self._viewer_tab_container.run_router)
+        self.tabs = TabsView(self._viewer_tab_container.tabs)
 
     def __call__(self, name, doc):
         self.name_doc.emit(name, doc)
 
     def add_tab(self, label):
-        return self._outer_tab_container.add_tab(label)
+        return self._viewer_tab_container.add_tab(label)
 
     def add_run(self, run, fill='delayed'):
         for name, doc in run.canonical(fill=fill):
             self.name_doc.emit(name, doc)
 
 
-class OuterTabContainer(QTabWidget):
+class ViewerTabContainer(QTabWidget):
     name_doc = Signal(str, dict)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.run_router = QRunRouter([self.current_outer_tab])
+        self.run_router = QRunRouter([self.current_viewer_tab])
         self.tabs = {}
 
     def add_tab(self, label=None):
@@ -184,14 +184,14 @@ class OuterTabContainer(QTabWidget):
             index = self.indexOf(inner_tab_container)
             old_label = self.tabText(index)
             del self.tabs[old_label]
-            self.tabs[label] = outer_tab
+            self.tabs[label] = viewer_tab
             self.setTabText(index, label)
 
-        outer_tab = OuterTab(inner_tab_container, set_label)
-        self.tabs[label] = outer_tab
-        return outer_tab
+        viewer_tab = ViewerTab(inner_tab_container, set_label)
+        self.tabs[label] = viewer_tab
+        return viewer_tab
 
-    def current_outer_tab(self, name, doc):
+    def current_viewer_tab(self, name, doc):
         if self.count():
             index = self.currentIndex()
             label = self.tabText(index)
@@ -202,7 +202,7 @@ class OuterTabContainer(QTabWidget):
         return [tab.run_router], []
 
 
-class OuterTab(ConfigurableQObject):
+class ViewerTab(ConfigurableQObject):
     name_doc = Signal(str, dict)
     factories = List([FigureDispatcher], config=True)
     handler_registry = Dict(DottedObjectName(), config=True)
