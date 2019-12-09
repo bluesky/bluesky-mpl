@@ -24,6 +24,22 @@ class Line(DocumentRouter):
         If None, a new Figure and Axes are created.
     **kwargs
         Passed through to :meth:`Axes.plot` to style Line object.
+
+    Examples
+    --------
+
+    Plot intensity 'I' normalized by 'I0' vs Event time.
+
+    >>> def func(event_page):
+    ...     "event_page -> x_points, y_points"
+    ...     y = event_page['data']['I'] / event_page['data']['I0']
+    ...     x = event_page['time']
+    ...     return x, y
+    ...
+    >>> line = Line(func)
+
+    See :meth:`Line.from_expr` for a more sunccinct way to achieve this kind of
+    thing.
     """
     def __init__(self, func, *, label_template='{scan_id} [{uid:.8}]', ax=None, **kwargs):
         self.func = func
