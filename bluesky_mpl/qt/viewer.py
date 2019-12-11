@@ -6,7 +6,7 @@ import re
 import event_model
 import matplotlib
 from traitlets.traitlets import Dict, DottedObjectName, List
-from qtpy.QtWidgets import QApplication, QMainWindow, QTabWidget, QWidget, QVBoxLayout
+from qtpy.QtWidgets import QApplication, QMainWindow, QTabWidget
 from qtpy.QtCore import QObject, Signal
 from qtpy import QtCore, QtGui
 
