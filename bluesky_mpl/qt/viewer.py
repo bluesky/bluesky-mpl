@@ -193,10 +193,12 @@ class Viewer(ConfigurableQObject):
         self.update_config(load_config())
         self._inner_tab_container = inner_tab_container
         self._set_label = set_label
-        self._run_start_uid = []
+        self._run_start_uids = []
+        factories = [factory(self._inner_tab_container.addTab)
+                     for factory in self.factories]
+        factories.append(self._register_run)
         self.run_router = QRunRouter(
-            [factory(self._inner_tab_container.addTab)
-             for factory in self.factories],
+            factories,
             handler_registry=self.handler_registry)
         super().__init__(*args, **kwargs)
         self.name_doc.connect(self.run_router)
@@ -213,6 +215,11 @@ class Viewer(ConfigurableQObject):
 
     def __call__(self, name, doc):
         self.name_doc.emit(name, doc)
+
+    def _register_run(self, name, doc):
+        "Capture the uid of every Run added to this Viewer."
+        assert name == 'start'
+        self._run_start_uids.append(doc['uid'])
 
 
 class InnerTabContainer(QTabWidget):
