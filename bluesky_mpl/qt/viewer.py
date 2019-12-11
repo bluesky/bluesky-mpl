@@ -1,4 +1,3 @@
-import collections.abc
 import functools
 import itertools
 import os
@@ -94,84 +93,64 @@ def _create_qApp():
         pass
 
 
-def start_viewer():
+def start_viewers():
     matplotlib.use('Qt5Agg')
     _create_qApp()
     main_window = QMainWindow()
-    viewer = Viewer()
-    main_window.setCentralWidget(viewer)
+    viewers = Viewers()
+    main_window.setCentralWidget(viewers)
     main_window.show()
     # Avoid letting main_window be garbage collected.
-    viewer._main_window = main_window
-    return viewer
+    viewers._main_window = main_window
+    return viewers
 
 
-class TabsView(collections.abc.Mapping):
-    def __init__(self, tabs):
-        self._tabs = tabs
-
-    def __repr__(self):
-        return f"TabsView({self._tabs!r})"
-
-    def __getitem__(self, key):
-        return self._tabs[key]
-
-    def __iter__(self):
-        yield from self._tabs
-
-    def __len__(self):
-        return len(self._tabs)
-
-    def __setitem__(self, key, value):
-        raise TypeError(
-            "The tabs cannot be edited directly. "
-            "Instead, use the method Viewer.add_tab.")
-
-    def __delitem__(self, key):
-        raise TypeError(
-            "The tabs cannot be edited directly. "
-            "Instead, use the method Viewer.remove_tab.")
-
-
-class Viewer(QWidget):
+class Viewers(QTabWidget):
     name_doc = Signal(str, dict)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        layout = QVBoxLayout()
-        self._viewer_tab_container = ViewerTabContainer()
-        layout.addWidget(self._viewer_tab_container)
-        self.setLayout(layout)
-        self.name_doc.connect(self._viewer_tab_container.run_router)
-        self.tabs = TabsView(self._viewer_tab_container.tabs)
+        self.run_router = QRunRouter([self.current_viewer])
+        self._viewers = {}
+        self.name_doc.connect(self.run_router)
+
+    def __repr__(self):
+        return f"<Viewer({set(self._viewers)})>"
+
+    def __getitem__(self, key):
+        return self._viewers[key]
+
+    def __iter__(self):
+        yield from self._viewers
+
+    def __len__(self):
+        return len(self._viewers)
+
+    def __setitem__(self, key, value):
+        raise TypeError(
+            "The tabs cannot be edited directly. "
+            "Instead, use the method Viewers.add_viewer.")
+
+    def __delitem__(self, key):
+        raise TypeError(
+            "The tabs cannot be edited directly. "
+            "Instead, use the method Viewer.remove_viewer.")
 
     def __call__(self, name, doc):
         self.name_doc.emit(name, doc)
-
-    def add_tab(self, label):
-        return self._viewer_tab_container.add_tab(label)
 
     def add_run(self, run, fill='delayed'):
         for name, doc in run.canonical(fill=fill):
             self.name_doc.emit(name, doc)
 
-
-class ViewerTabContainer(QTabWidget):
-    name_doc = Signal(str, dict)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.run_router = QRunRouter([self.current_viewer_tab])
-        self.tabs = {}
-
-    def add_tab(self, label=None):
-        if label in self.tabs:
+    def add_viewer(self, label=None):
+        if label in self._viewers:
             raise ValueError(f"Must be unique and {label} is already taken")
         elif label is None:
             for i in itertools.count():
                 label = f'Untitled {i}'
                 try:
-                    return self.add_tab(label)
+                    return self.add_viewer(label)
                 except ValueError:
                     continue
 
@@ -179,30 +158,33 @@ class ViewerTabContainer(QTabWidget):
         self.addTab(inner_tab_container, label)
 
         def set_label(label):
-            if label in self.tabs:
+            if label in self._viewers:
                 raise ValueError(f"Must be unique and {label} is already taken")
             index = self.indexOf(inner_tab_container)
             old_label = self.tabText(index)
-            del self.tabs[old_label]
-            self.tabs[label] = viewer_tab
+            del self._viewers[old_label]
+            self._viewers[label] = viewer
             self.setTabText(index, label)
 
-        viewer_tab = ViewerTab(inner_tab_container, set_label)
-        self.tabs[label] = viewer_tab
-        return viewer_tab
+        viewer = Viewer(inner_tab_container, set_label)
+        self._viewers[label] = viewer
+        return viewer
 
-    def current_viewer_tab(self, name, doc):
+    def remove_viewer(self, label):
+        raise NotImplementedError
+
+    def current_viewer(self, name, doc):
         if self.count():
             index = self.currentIndex()
             label = self.tabText(index)
-            tab = self.tabs[label]
+            tab = self._viewers[label]
         else:
-            tab = self.add_tab()
+            tab = self.add_viewer()
         tab.run_router('start', doc)
         return [tab.run_router], []
 
 
-class ViewerTab(ConfigurableQObject):
+class Viewer(ConfigurableQObject):
     name_doc = Signal(str, dict)
     factories = List([FigureDispatcher], config=True)
     handler_registry = Dict(DottedObjectName(), config=True)
