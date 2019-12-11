@@ -220,6 +220,7 @@ class Viewer(ConfigurableQObject):
         "Capture the uid of every Run added to this Viewer."
         assert name == 'start'
         self._run_start_uids.append(doc['uid'])
+        return [], []
 
 
 class InnerTabContainer(QTabWidget):
